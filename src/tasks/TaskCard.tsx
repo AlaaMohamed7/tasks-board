@@ -82,7 +82,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit }) => {
       <p className="text-gray-600 dark:text-gray-300">{task.description}</p>
       <p className="text-sm text-gray-500 dark:text-gray-400 font-bold">Priority: <span className={`font-medium ${getPriorityClass(task.priority)}`}>{task.priority}</span></p>
       <div className='flex gap-5'>
-
       <button className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline" onClick={() => onEdit(task)}>Edit</button>
       <button className="mt-2 text-sm text-red-600 dark:text-blue-400 hover:underline" onClick={() => deleteHandler(task.id) }><img alt='Delete' className='w-5' src={trash} /></button>
       </div>

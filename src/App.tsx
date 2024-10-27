@@ -63,7 +63,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-10 overflow-x-auto">
       <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-8">Tasks Board</h1>
-      <div className='flex gap-5  mb-10'>
+      <div className='flex md:flex-row flex-col gap-5  mb-10'>
         <div className=''>
 
       <label htmlFor='search' className='dark:text-white font-bold text-[16px] mx-5' >Search</label> 
