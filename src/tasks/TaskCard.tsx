@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { deleteTask } from './tasksSlice';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import trash from "../assets/trash.svg"
 
 
 interface TaskCardProps {
@@ -59,16 +60,32 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit }) => {
     });
 }
 
-const imageUrl = task.image ? URL.createObjectURL(task.image) : undefined;
+  const imageUrl = task.image instanceof File ? URL.createObjectURL(task.image) : undefined;
+
+  const getPriorityClass = (level: string): string => {
+    switch (level) {
+        case level =  "Low":
+            return "text-[#E2A03F]";
+        case level =  "Medium":
+            return "text-[#805DCA]";
+        case level =  "High":
+            return "text-[#00AB55]";
+        default:
+            return "badge";
+    }
+};
 
   return (
     <div className="bg-white dark:bg-gray-700 p-4 rounded-md shadow-lg flex flex-col space-y-2">
       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{task.title}</h3>
       {task.image && <img src={imageUrl} alt={task.title} className="mt-2 w-full h-auto rounded" />}
       <p className="text-gray-600 dark:text-gray-300">{task.description}</p>
-      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Priority: {task.priority}</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 font-bold">Priority: <span className={`font-medium ${getPriorityClass(task.priority)}`}>{task.priority}</span></p>
+      <div className='flex gap-5'>
+
       <button className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline" onClick={() => onEdit(task)}>Edit</button>
-      <button className="mt-2 text-sm text-red-600 dark:text-blue-400 hover:underline" onClick={() => deleteHandler(task.id) }>Delete</button>
+      <button className="mt-2 text-sm text-red-600 dark:text-blue-400 hover:underline" onClick={() => deleteHandler(task.id) }><img alt='Delete' className='w-5' src={trash} /></button>
+      </div>
     </div>
   );
 };

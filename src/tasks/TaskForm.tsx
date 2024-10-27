@@ -16,7 +16,7 @@ export interface TaskFormData {
   description: string;
   priority: 'Low' | 'Medium' | 'High';
   state: 'todo' | 'doing' | 'done';
-  image?: FileList;
+  image?: FileList | File | null;
 }
 
 const taskSchema = yup.object({
@@ -24,7 +24,7 @@ const taskSchema = yup.object({
   description: yup.string().required('Description is required'),
   priority: yup.string().oneOf(['Low', 'Medium', 'High']).required(),
   state: yup.string().oneOf(['todo', 'doing', 'done']).required(),
-  image: yup.mixed().optional(),
+  image: yup.mixed<File | FileList>().optional().nullable(),
 });
 
 const TaskForm: React.FC<TaskFormProps> = ({ onSubmit, defaultValues }) => {
@@ -54,7 +54,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit, defaultValues }) => {
   });
 
   const onFormSubmit = (data: TaskFormData) => {
-    const image = data.image?.[0];  
+    const image = data.image instanceof FileList ? data.image[0] : data.image;  
     onSubmit({ ...data, image: image || defaultValues?.image });
     onSuccessSaveHandler();
     reset(); 
@@ -76,13 +76,19 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit, defaultValues }) => {
             setValue("description",defaultValues.description);
         }
         if (defaultValues.image) {
-            setImagePreview(URL.createObjectURL(defaultValues.image));
-          }
+          setImagePreview(
+            defaultValues.image instanceof FileList ? URL.createObjectURL(defaultValues.image[0]) : URL.createObjectURL(defaultValues.image)
+          );
+        }
     }
   },[defaultValues,setValue])
 
   const [imagePreview, setImagePreview] = useState<string | null>(
-    defaultValues?.image ? URL.createObjectURL(defaultValues.image) : null
+    defaultValues?.image
+      ? URL.createObjectURL(
+          defaultValues.image instanceof FileList ? defaultValues.image[0] : defaultValues.image
+        )
+      : null
   );
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

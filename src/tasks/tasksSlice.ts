@@ -9,7 +9,7 @@ export interface Task {
   description: string;
   priority: 'Low' | 'Medium' | 'High';
   state: 'todo' | 'doing' | 'done';
-  image?: FileList;
+  image?: FileList | File | null;
 }
 
 interface TasksState {

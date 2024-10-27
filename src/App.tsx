@@ -29,8 +29,6 @@ export default function App() {
   const onDragEnd = (result: DropResult) => {
     const { destination, draggableId } = result;
     if (!destination) return;
-
-    // If the task is moved to a different column, update its state
     const newState = destination.droppableId as Task['state'];
     dispatch(moveTask({ id: draggableId, state: newState }));
   };
